@@ -1,6 +1,6 @@
 import { AnimatePresence, easeInOut, motion } from "motion/react";
 import pickachuDance from "../assets/Pikachue-dance.gif";
-export default function Modal({ isModalOpen, closeModal }) {
+export default function Modal({ isModalOpen, handleRestart }) {
   return (
     <AnimatePresence initial={false}>
       {isModalOpen && (
@@ -19,16 +19,13 @@ export default function Modal({ isModalOpen, closeModal }) {
             className="relative p-4 w-full max-w-md max-h-full"
           >
             <div className="relative bg-white rounded-lg shadow-lg p-6 h-80">
-              <button
-                onClick={closeModal}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl cursor-pointer"
-              >
-                ✕
-              </button>
               <div className="flex flex-col justify-between items-center h-full">
                 <h3 className="text-5xl font-bold my-4">Game Over!</h3>
                 <img src={pickachuDance} alt="Pickachu" className="w-70" />
-                <button className="bg-red-500 text-white px-10 py-1 font-semibold rounded-xl cursor-pointer text-xl">
+                <button
+                  onClick={handleRestart}
+                  className="bg-red-500 text-white px-10 py-1 font-semibold rounded-xl cursor-pointer text-xl"
+                >
                   Restart
                 </button>
               </div>

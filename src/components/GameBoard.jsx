@@ -16,7 +16,7 @@ export default function GameBoard() {
     setIsLoading(true);
     const fetchImage = async () => {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         const pokemonData = await fetchData();
         setData(pokemonData);
         console.log("Pokemon Data:", pokemonData);
@@ -39,8 +39,21 @@ export default function GameBoard() {
     }
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const handleRestart = async () => {
+    setIsLoading(true);
+    setIsModalOpen(true);
+    setSelectedCard([]);
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const newPokemonData = await fetchData();
+      setData(newPokemonData);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+      setIsModalOpen(false);
+    }
   };
 
   if (isLoading) {
@@ -79,7 +92,7 @@ export default function GameBoard() {
         </div>
       </div>
 
-      <Modal isModalOpen={isModalOpen} closeModal={closeModal} />
+      <Modal isModalOpen={isModalOpen} handleRestart={handleRestart} />
     </div>
   );
 }
