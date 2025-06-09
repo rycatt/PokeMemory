@@ -1,11 +1,14 @@
-export default function Card({ pokemon }) {
+export default function Card({ pokemon, onCardSelect }) {
   return (
-    <div className="flex flex-col items-center bg-slate-200 min-w-52 rounded-lg cursor-pointer hover:scale-105 transition-scale duration-200">
+    <div
+      className="flex flex-col items-center bg-slate-200 min-w-52 rounded-lg cursor-pointer hover:scale-105 transition-scale duration-200"
+      onClick={onCardSelect}
+    >
       <div className="w-40">
         {pokemon && pokemon.sprites && (
           <img
             src={pokemon.sprites.front_default}
-            alt="Pokemon Character"
+            alt={pokemon.name}
             className="w-full h-full object-cover rounded-lg"
           />
         )}

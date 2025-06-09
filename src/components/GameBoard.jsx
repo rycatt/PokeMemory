@@ -3,11 +3,14 @@ import Card from "./Card";
 import Header from "./Header";
 import fetchData from "../services/ImageFetcher";
 import pokeBallLoading from "../assets/pokeball-loading.gif";
+import Modal from "./Modal";
 
 export default function GameBoard() {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  const [selectedCard, setSelectedCard] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -26,6 +29,20 @@ export default function GameBoard() {
     fetchImage();
   }, []);
 
+  const handleCardSelection = (pokemonName) => {
+    if (selectedCard[pokemonName]) {
+      console.log("Card has already been selected");
+      setIsModalOpen(true);
+    } else {
+      setSelectedCard((prev) => ({ ...prev, [pokemonName]: true }));
+      console.log("Card selected for the first Time!");
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   if (isLoading) {
     return (
       <div className="bg-bg-primary min-h-screen flex justify-center items-center text-white text-5xl font-bold">
@@ -35,7 +52,11 @@ export default function GameBoard() {
   }
 
   if (error) {
-    return <div>Something went wrong! Please try again. {error}</div>;
+    return (
+      <div className="bg-bg-primary min-h-screen flex justify-center items-center text-white text-5xl font-bold">
+        Something went wrong! Please try again. {error.message}
+      </div>
+    );
   }
 
   return (
@@ -48,11 +69,17 @@ export default function GameBoard() {
             {data &&
               Array.isArray(data) &&
               data.map((pokemonData) => (
-                <Card key={pokemonData.name} pokemon={pokemonData} />
+                <Card
+                  key={pokemonData.name}
+                  pokemon={pokemonData}
+                  onCardSelect={() => handleCardSelection(pokemonData.name)}
+                />
               ))}
           </div>
         </div>
       </div>
+
+      <Modal isModalOpen={isModalOpen} closeModal={closeModal} />
     </div>
   );
 }
