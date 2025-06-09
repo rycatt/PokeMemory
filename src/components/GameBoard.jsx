@@ -29,12 +29,27 @@ export default function GameBoard() {
     fetchImage();
   }, []);
 
+  const shuffle = (array) => {
+    let currentIndex = array.length;
+
+    while (currentIndex !== 0) {
+      let randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex],
+      ];
+    }
+  };
+
   const handleCardSelection = (pokemonName) => {
     if (selectedCard[pokemonName]) {
-      console.log("Card has already been selected");
       setIsModalOpen(true);
+      console.log("Card has already been selected");
     } else {
       setSelectedCard((prev) => ({ ...prev, [pokemonName]: true }));
+      shuffle(data);
       console.log("Card selected for the first Time!");
     }
   };
