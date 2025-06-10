@@ -5,21 +5,26 @@ import fetchData from "../services/ImageFetcher";
 import pokeBallLoading from "../assets/pokeball-loading.gif";
 import Modal from "./Modal";
 
+const WINNING_SCORE = 9;
+const LOADING_DELAY = 1000;
+
 export default function GameBoard() {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [selectedCard, setSelectedCard] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
+  const [gameOutcome, setGameOutcome] = useState(null);
 
   useEffect(() => {
     setIsLoading(true);
     const fetchImage = async () => {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, LOADING_DELAY));
         const pokemonData = await fetchData();
         setData(pokemonData);
-        console.log("Pokemon Data:", pokemonData);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -29,34 +34,49 @@ export default function GameBoard() {
     fetchImage();
   }, []);
 
+  useEffect(() => {
+    if (score > highScore) {
+      setHighScore(score);
+    }
+
+    if (score === WINNING_SCORE) {
+      setGameOutcome("Win");
+      setIsModalOpen(true);
+    }
+  }, [score, highScore]);
+
   const shuffle = (array) => {
-    let currentIndex = array.length;
+    const shuffled = [...array];
+    let currentIndex = shuffled.length;
 
     while (currentIndex !== 0) {
       let randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
 
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex],
-        array[currentIndex],
+      [shuffled[currentIndex], shuffled[randomIndex]] = [
+        shuffled[randomIndex],
+        shuffled[currentIndex],
       ];
     }
+    return shuffled;
   };
 
   const handleCardSelection = (pokemonName) => {
     if (selectedCard[pokemonName]) {
       setIsModalOpen(true);
-      console.log("Card has already been selected");
+      setGameOutcome("Loss");
     } else {
       setSelectedCard((prev) => ({ ...prev, [pokemonName]: true }));
-      shuffle(data);
-      console.log("Card selected for the first Time!");
+      setData((prevData) => shuffle(prevData));
+      setScore((prev) => prev + 1);
     }
   };
 
   const handleRestart = async () => {
     setIsLoading(true);
     setIsModalOpen(true);
+    setGameOutcome(null);
+    setScore(0);
     setSelectedCard([]);
 
     try {
@@ -89,10 +109,9 @@ export default function GameBoard() {
 
   return (
     <div className="bg-bg-primary min-h-screen p-6">
-      <Header />
-      <div>
+      <Header score={score} highScore={highScore} />
+      <div className="mt-4">
         <div className="flex flex-col items-center">
-          <h1 className="mb-12 text-3xl text-white font-bold">Memory Game</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             {data &&
               Array.isArray(data) &&
@@ -100,14 +119,18 @@ export default function GameBoard() {
                 <Card
                   key={pokemonData.name}
                   pokemon={pokemonData}
-                  onCardSelect={() => handleCardSelection(pokemonData.name)}
+                  onClick={() => handleCardSelection(pokemonData.name)}
                 />
               ))}
           </div>
         </div>
       </div>
 
-      <Modal isModalOpen={isModalOpen} handleRestart={handleRestart} />
+      <Modal
+        isModalOpen={isModalOpen}
+        handleRestart={handleRestart}
+        headerMessage={gameOutcome == "Win" ? "You Won!" : "Game Over"}
+      />
     </div>
   );
 }
