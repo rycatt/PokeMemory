@@ -1,12 +1,41 @@
-# React + Vite
+# PokémonMemory
+A memory card game featuring Pokémon characters, built with React.js and Tailwind CSS.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🔗 **Live Preview**: [Launch App](https://pokememory-sepia.vercel.app/)
 
-Currently, two official plugins are available:
+## Screenshot
+![App Screenshot](src/assets/Screenshot.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Installation
+> **Note:** The app is also playable live at the link above.
 
-## Expanding the ESLint configuration
+1. **Clone the repository**  
+   ```bash
+   git clone https://github.com/rycatt/pokememory.git
+   ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+2. **Navigate to the project folder**
+   ```bash
+   cd pokememory
+   ```
+
+3. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+4. **Start the development server**
+   ```bash
+   npm start
+   ```
+
+
+## Built With
+- ![React](https://img.shields.io/badge/React-61dafb?style=for-the-badge&logo=react&logoColor=black)
+- ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38bdf8?style=for-the-badge&logo=tailwind-css&logoColor=white)
+- ![JavaScript](https://img.shields.io/badge/JavaScript-f7df1e?style=for-the-badge&logo=javascript&logoColor=black)
+
+
+## Author
+Created by **[@rycatt](https://github.com/rycatt)**  
+Built with guidance from The Odin Project 
