@@ -11,7 +11,7 @@ A memory card game featuring Pokémon characters, built with React.js and Tailwi
 
 1. **Clone the repository**  
    ```bash
-   git clone https://github.com/rycatt/pokememory.git
+   git clone https://github.com/rycatt/PokeMemory.git
    ```
 
 2. **Navigate to the project folder**
